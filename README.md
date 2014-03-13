@@ -1,5 +1,5 @@
 
-# Compass-sprite-controll-plugin
+# Compass-sprite-control-plugin
 
 # Usage
 
@@ -26,5 +26,6 @@ sprite-position-ext
 
 TODO
 
-* どの関数を使うとスプライト画像を生成するようにするか
+* sprite-map-extの$debugがtrueの場合、新しいスプライト画像を出力する
+* sprite-map-ext以外の関数は、スプライト画像のメタ情報から情報を読み、ない場合はエラーを返す。
 
