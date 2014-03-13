@@ -4,12 +4,40 @@ require "rmagick"
 
 module SpriteController
 
+    module SpriteChild
+
+        attr_accessor :bgPos
+
+        def self.test
+            puts "child"
+        end
+
+        #module_function :test
+    end
+
+end
+
+# 既存クラスの拡張
+module Magick
+    class Image
+
+        def test
+            puts "hoge"
+        end
+
+    end
+end
+
+module SpriteController
+
     attr_accessor :spriteImg
     attr_accessor :spriteImgChildren
 
+    #Magick::Image.extend(SpriteChild)
+
     def createSprite
         tmpImgList = readImgs
-
+=begin
         # Mgick::ImageクラスのArrayに変換
         @spriteImgChildren = tmpImgList.to_a
 
@@ -17,6 +45,7 @@ module SpriteController
         @spriteImg = tmpImgList.append(true)
 
         saveSprite
+=end
 
 =begin
         # Arrayの長さとクラス名を取得
@@ -40,6 +69,13 @@ module SpriteController
             imgList.read f
         }
 
+        imgList.to_a.each{|f|
+            p f.class
+            f.test
+            #p f.bgPos
+            #f.bgPos = "hoge"
+        }
+
         imgList
     end
 
@@ -54,22 +90,17 @@ module SpriteController
     module_function :readImgs
     module_function :saveSprite
 
-    class Img
 
-        attr_accessor :path
-        attr_accessor :width, :height
-
-    end
-
-
-    class SpriteChild < Img
+    # 上となにが違う
+=begin
+    class SpriteChild < Magick::Image
 
         attr_accessor :bgPos
 
     end
+=end
 
-
-    class Sprite < Img
+    class Sprite < Magick::Image
 
         attr_accessor :spriteImg
         attr_accessor :imgArray
