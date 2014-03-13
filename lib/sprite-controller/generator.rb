@@ -16,25 +16,15 @@ module SpriteController
         # スプライト画像を作成
         @spriteImg = tmpImgList.append(true)
 
+        saveSprite
+
 =begin
         # Arrayの長さとクラス名を取得
         p @spriteImgChildren.length
         p @spriteImgChildren[1].class
-=end
 
-=begin
-        @imgSprite = imgList.append(true)
-        @imgSprite['comment'] = ''
-
-        p @imgSprite.format
-        @imgSprite.write("./images/sprite.png")
-
-        p @imgList.format
-
-        getPositionXByIndex
-
-        @imgArray = Compass::SpriteImporter::find_all_sprite_map_files("assets/icons/*.png")
-        #@imgArray = Compass::SpriteImporter::find_all_sprite_map_files("assets/icons/*.png")
+        p @spriteImg.format
+        Compass::SpriteImporter::find_all_sprite_map_files("assets/icons/*.png")
 =end
     end
 
@@ -53,8 +43,16 @@ module SpriteController
         imgList
     end
 
+
+    # スプライト画像を保存
+    def saveSprite
+        @spriteImg['comment'] = 'test'
+        @spriteImg.write("./images/sprite.png")
+    end
+
     module_function :createSprite
     module_function :readImgs
+    module_function :saveSprite
 
     class Img
 
