@@ -1,3 +1,6 @@
+$sprites: sprite_map_ext("assets/icons/*.png", false);
+
 .hello {
-    content: sprite_control();
+    content: sprite_control($sprites);
+    //content: sprite($sprites);
 }

@@ -1,24 +1,28 @@
-
+require "compass"
 require "rmagick"
 
-class Sprite
+
+module SpriteController
 
     attr_accessor :spriteImg
-    attr_accessor :imgArray
-    attr_accessor :imgList
-    attr_accessor :spriteWidth, :spriteHeight
+    attr_accessor :spriteImgChildren
 
-    def initialize()
-        # 画像へのパスはコマンドを実行した場所からの相対パス
-        @imgList = Magick::ImageList.new("./images/assets/icons/icon-1.png", "./images/assets/icons/icon-2.png", "./images/assets/icons/icon-3.png", "./images/assets/icons/icon-4.png", "./images/assets/icons/icon-5.png")
+    def createSprite
+        tmpImgList = readImgs
 
-        # Arrayに変換
-        @imgArray = imgList.to_a
+        # Mgick::ImageクラスのArrayに変換
+        @spriteImgChildren = tmpImgList.to_a
 
+        # スプライト画像を作成
+        @spriteImg = tmpImgList.append(true)
+
+=begin
         # Arrayの長さとクラス名を取得
-        p @imgArray.length
-        p @imgArray[1].class
+        p @spriteImgChildren.length
+        p @spriteImgChildren[1].class
+=end
 
+=begin
         @imgSprite = imgList.append(true)
         @imgSprite['comment'] = ''
 
@@ -28,32 +32,79 @@ class Sprite
         p @imgList.format
 
         getPositionXByIndex
+
+        @imgArray = Compass::SpriteImporter::find_all_sprite_map_files("assets/icons/*.png")
+        #@imgArray = Compass::SpriteImporter::find_all_sprite_map_files("assets/icons/*.png")
+=end
     end
 
-    def getPositionXByIndex()
-        sumX = 0
-        sumY = 0
+    def readImgs
+        p "test"
+        # 画像へのパスはコマンドを実行した場所からの相対パス
+        imgList = Magick::ImageList.new
 
-        @imgArray.each{|image|
-            sumX += image.columns
-            sumY += image.rows
+        path, name = Compass::SpriteImporter::path_and_name("assets/icons/*.png")
+        files = Compass::SpriteImporter::files("assets/icons/*.png")
 
-            p sumX
-            p sumY
+        files.each{|f|
+            imgList.read f
         }
+
+        imgList
     end
 
-    def getPositionYByIndex()
+    module_function :createSprite
+    module_function :readImgs
+
+    class Img
+
+        attr_accessor :path
+        attr_accessor :width, :height
+
     end
 
-    def createSrpite(path)
+
+    class SpriteChild < Img
+
+        attr_accessor :bgPos
+
     end
 
-    def saveSrpite(path)
+
+    class Sprite < Img
+
+        attr_accessor :spriteImg
+        attr_accessor :imgArray
+        attr_accessor :imgList
+        attr_accessor :spriteWidth, :spriteHeight
+
+        def initialize()
+
+        end
+
+        def getPositionXByIndex()
+            sumX = 0
+            sumY = 0
+
+            @imgArray.each{|image|
+                sumX += image.columns
+                sumY += image.rows
+
+                p sumX
+                p sumY
+            }
+        end
+
+        def getPositionYByIndex()
+        end
+
+        def createSrpite(path)
+        end
+
+        def saveSrpite(path)
+        end
+
     end
 
-end
-
-module SpriteController
 
 end
