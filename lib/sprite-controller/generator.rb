@@ -32,72 +32,77 @@ end
 module SpriteController
 
     attr_accessor :debug
-    attr_accessor :spriteImg
-    attr_accessor :spriteImgChildren
 
     class SpriteManager
         attr_accessor :spriteImg
-    end
+        attr_accessor :spriteImgChildren
 
-    def createSprite
-        p @spriteImgChildren.class
+        def initialize(map)
+            readImgs
 
-        readImgs
+            # スプライト画像を作成
+            @spriteImg = @spriteImgChildren.append(true).extend(SpriteController::Sprite)
+            @spriteImg = composeSprite.extend(SpriteController::Sprite)
 
-        # スプライト画像を作成
-        @spriteImg = @spriteImgChildren.append(true).extend(SpriteController::Sprite)
-        @spriteImg = composeSprite.extend(SpriteController::Sprite)
-
-        @spriteImgChildren.to_a.each{|img|
-            #img.extend(SpriteController::SpriteChild)
-            p img.backgroundPos_y
-        }
-
-        @spriteImg.saveSprite
-    end
-
-    def background_pos()
-        @spriteImgChildren.to_a[1].backgroundPos_y
-    end
-
-
-    def readImgs
-        # 画像へのパスはコマンドを実行した場所からの相対パス
-        @spriteImgChildren = Magick::ImageList.new
-
-        path, name = Compass::SpriteImporter::path_and_name("assets/icons/*.png")
-        files = Compass::SpriteImporter::files("assets/sample-1/*.png")
-
-        files.each{|f|
-            # ファイル名からMagick::Imageクラスのインスタンスを作成し、SpriteChildのメソッドを特異メソッド化
-            @spriteImgChildren.read(f).to_a.each{|img|
-                img.extend(SpriteController::SpriteChild)
+            @spriteImgChildren.to_a.each{|img|
+                #img.extend(SpriteController::SpriteChild)
+                p img.backgroundPos_y
             }
-        }
 
-        @spriteImgChildren
+            @spriteImg.saveSprite
+        end
+
+        def background_pos()
+            @spriteImgChildren.to_a[1].backgroundPos_y
+        end
+
+
+        def readImgs
+            # 画像へのパスはコマンドを実行した場所からの相対パス
+            @spriteImgChildren = Magick::ImageList.new
+
+            path, name = Compass::SpriteImporter::path_and_name("assets/icons/*.png")
+            files = Compass::SpriteImporter::files("assets/sample-1/*.png")
+
+            files.each{|f|
+                # ファイル名からMagick::Imageクラスのインスタンスを作成し、SpriteChildのメソッドを特異メソッド化
+                @spriteImgChildren.read(f).to_a.each{|img|
+                    img.extend(SpriteController::SpriteChild)
+                }
+            }
+
+            @spriteImgChildren
+        end
+
+        def composeSprite
+            pos_y = 0
+            pos_x = 0
+            @spriteImgChildren.backgroundPos_y = pos_y
+
+            @spriteImgChildren.to_a.each{ |img|
+                pos_y += img.columns
+
+                img.backgroundPos_y = pos_y
+                img.backgroundPos_x = 0
+            }
+
+            @spriteImgChildren.append(true)
+        end
+
     end
 
-    def composeSprite
-
-        pos_y = 0
-        pos_x = 0
-        @spriteImgChildren.backgroundPos_y = pos_y
-
-        @spriteImgChildren.to_a.each{ |img|
-            pos_y += img.columns
-
-            img.backgroundPos_y = pos_y
-            img.backgroundPos_x = 0
-        }
-
-        @spriteImgChildren.append(true)
-
+    def init(map, debug)
+        if debug
+            SpriteManager.new(map)
+        else
+            p "debug : false"
+        end
     end
 
-    module_function :createSprite
-    module_function :readImgs
-    module_function :composeSprite
+    def background_pos
+    end
+
+    module_function :init
     module_function :background_pos
 
 end
