@@ -5,8 +5,8 @@ module Sass::Script::Functions
 
     # sprte-map-ext
     # : create sprite image if debug is true
-    def sprite_map_ext(map, debug, *args)
-        SpriteController::init(map.value, debug.value)
+    def sprite_map_ext(glob, debug, *args)
+        SpriteController::init(glob, debug.value)
 
         Sass::Script::String.new("sprite-controller")
     end

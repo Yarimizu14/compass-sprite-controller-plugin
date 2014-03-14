@@ -1,4 +1,4 @@
-$sprites: sprite_map_ext("assets/icons/*.png", true);
+$sprites: sprite-map-ext("assets/icons/*.png", true);
 
 .hello {
     content: sprite-position-ext($sprites, "sprite-name");
