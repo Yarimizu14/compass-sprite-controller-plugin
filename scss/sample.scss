@@ -1,5 +1,5 @@
 $sprites: sprite-map-ext("assets/icons/*.png", true);
 
 .hello {
-    content: sprite-position-ext($sprites, "sprite-name");
+    background-position: sprite-position-ext($sprites, "icon-3.png");
 }

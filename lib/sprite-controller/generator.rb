@@ -49,16 +49,15 @@ module SpriteController
             @spriteImg = @spriteImgChildren.append(true).extend(SpriteController::Sprite)
             @spriteImg = composeSprite.extend(SpriteController::Sprite)
 
-            @spriteImgChildren.to_a.each{|img|
-                #img.extend(SpriteController::SpriteChild)
-                p img.backgroundPos_y
-            }
-
             @spriteImg.saveSprite
         end
 
-        def background_pos
-            @spriteImgChildren.to_a[1].backgroundPos_y
+        def background_pos(name)
+            @spriteImgChildren.to_a.each{ |img|
+                if img.name == name.value
+                    return img.backgroundPos_x, img.backgroundPos_y
+                end
+            }
         end
 
 
@@ -86,10 +85,10 @@ module SpriteController
             @spriteImgChildren.backgroundPos_y = pos_y
 
             @spriteImgChildren.to_a.each{ |img|
-                pos_y += img.columns
-
                 img.backgroundPos_y = pos_y
                 img.backgroundPos_x = 0
+
+                pos_y += img.columns
             }
 
             @spriteImgChildren.append(true)
@@ -106,9 +105,9 @@ module SpriteController
         end
     end
 
-    def background_pos
+    def background_pos(name)
         if @debug && !@manager.nil?
-            @manager.background_pos
+            @manager.background_pos(name)
         else
             p "debug : false"
         end
