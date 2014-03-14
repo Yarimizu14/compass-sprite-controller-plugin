@@ -11,9 +11,7 @@ module Sass::Script::Functions
         Sass::Script::String.new("sprite-controller")
     end
 
-    def sprite_position_ext_y(map, name)
-        SpriteController::background_pos
-
+    def sprite_position_ext(map, name)
         Sass::Script::String.new(SpriteController.background_pos.to_s)
     end
     #declare :escape, :args => [:string]

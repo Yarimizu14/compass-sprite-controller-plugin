@@ -32,12 +32,13 @@ end
 module SpriteController
 
     attr_accessor :debug
+    attr_accessor :manager
 
     class SpriteManager
         attr_accessor :spriteImg
         attr_accessor :spriteImgChildren
 
-        def initialize(map)
+        def initialize(path)
             readImgs
 
             # スプライト画像を作成
@@ -92,14 +93,20 @@ module SpriteController
     end
 
     def init(map, debug)
-        if debug
-            SpriteManager.new(map)
+        @debug = debug
+        if @debug
+            @manager = SpriteManager.new(map)
         else
             p "debug : false"
         end
     end
 
     def background_pos
+        if @debug && !@manager.nil?
+            @manager.background_pos
+        else
+            p "debug : false"
+        end
     end
 
     module_function :init
